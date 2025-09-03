@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createUser } from "../services/mockData";
+import { createUser } from "../services/api";
 
-export default function Create() {
+const CreateUser = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
@@ -39,4 +39,6 @@ export default function Create() {
       </form>
     </div>
   );
-}
+};
+
+export default CreateUser;

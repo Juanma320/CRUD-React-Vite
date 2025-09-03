@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getUsers, deleteUser } from "../services/mockData";
-import type { User } from "../services/mockData";
+import { getUsers, deleteUser } from "../services/api";
+import type { User } from "../services/api";
 
 export default function Home() {
   const [users, setUsers] = useState<User[]>([]);

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getUserById, updateUser } from "../services/mockData";
+import { getUserById, updateUser } from "../services/api";
 
-export default function Edit() {
-  const { id } = useParams();
+const EditUser = () => {
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -55,4 +55,6 @@ export default function Edit() {
       </form>
     </div>
   );
-}
+};
+
+export default EditUser;
