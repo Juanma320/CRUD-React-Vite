@@ -1,69 +1,126 @@
-# React + TypeScript + Vite
+# ModernCRUD ✨
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Una aplicación CRUD moderna y elegante construida con las últimas tecnologías web. Gestión de usuarios con una interfaz futurista, animaciones fluidas y experiencia de usuario excepcional.
 
-Currently, two official plugins are available:
+## ✨ Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Gestión completa de usuarios** - Crear, editar, eliminar y visualizar
+- **Búsqueda en tiempo real** - Filtrado instantáneo por nombre y email
+- **Drag & Drop** - Reordenamiento visual activando modo especial
+- **Tema dinámico** - Claro, oscuro o automático según sistema
+- **Interfaz moderna** - Glassmorphism, animaciones y micro-interacciones
+- **Notificaciones elegantes** - Toast y diálogos de confirmación
+- **Responsive design** - Optimizado para móvil, tablet y desktop
 
-## Expanding the ESLint configuration
+## 🛠️ Stack Tecnológico
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Frontend
+- **React 19** - Framework principal
+- **TypeScript** - Type safety
+- **Vite** - Build tool y dev server
+- **Tailwind CSS 4** - Utility-first CSS
+- **Framer Motion** - Animaciones y gestos
+- **Lucide React** - Iconos modernos
+- **React Router DOM** - Navegación SPA
+- **Axios** - Cliente HTTP
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Backend
+- **Node.js + Express** - API REST
+- **PostgreSQL** - Base de datos
+- **TypeScript** - Type safety
+- **CORS** - Cross-origin requests
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Herramientas de Desarrollo
+- **pnpm** - Gestor de paquetes con workspace
+- **ESLint** - Linting
+- **Nodemon** - Auto-reload del servidor
+- **ts-node** - Ejecutor de TypeScript
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 📋 Requisitos
+
+- **Node.js** 18+
+- **PostgreSQL** 12+
+- **pnpm** 8+
+
+## 🏢 Arquitectura del Proyecto
+
+```
+CRUD-React/
+├── src/                # Frontend React (raíz)
+│   ├── components/ui/  # Componentes reutilizables
+│   ├── contexts/       # Context providers (Theme, Toast)
+│   ├── hooks/          # Custom hooks
+│   ├── pages/          # Páginas principales
+│   ├── services/       # API y servicios externos
+│   └── types/          # Definiciones de tipos
+├── backend/            # API Express + PostgreSQL
+│   ├── src/index.ts    # Servidor principal
+│   └── package.json    # Backend dependencies
+├── tests/              # Suite de pruebas de estrés
+├── package.json        # Frontend dependencies
+└── pnpm-workspace.yaml # Configuración de workspace
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🗄️ Configuración de Base de Datos
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```sql
+-- Crear tabla
+CREATE TABLE "users" (
+    "id" SERIAL NOT NULL,
+    "name" VARCHAR(100) NOT NULL,
+    "email" VARCHAR(150) NOT NULL,
+    PRIMARY KEY ("id"),
+    UNIQUE ("email")
+);
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+-- Insertar registros de ejemplo
+INSERT INTO "users" ("name", "email") VALUES
+('Juan', 'juan@mail.com'),
+('Ana', 'ana@mail.com'),
+('Luis', 'luis@mail.com');
 ```
+
+## 🚀 Instalación
+
+### 1. Clonar y configurar el proyecto
+```bash
+# Clonar el repositorio
+git clone <repository-url>
+cd CRUD-React
+
+# Instalar todas las dependencias (frontend + backend)
+pnpm install
+```
+
+### 2. Configurar base de datos
+```bash
+# Configurar variables de entorno
+cd backend
+copy .env.example .env
+# Editar .env con tus credenciales de PostgreSQL
+```
+
+### 3. Ejecutar el proyecto
+```bash
+# Terminal 1 - Frontend
+pnpm run dev
+
+# Terminal 2 - Backend
+cd backend
+pnpm run dev
+```
+
+## 🧪 Testing
+
+El proyecto incluye scripts de pruebas de estrés en la carpeta `tests/`:
+
+```bash
+# Pruebas de estrés para operaciones CRUD
+node tests/user-creation-stress.js
+node tests/user-read-stress.js
+node tests/user-update-stress.js
+node tests/user-delete-stress.js
+node tests/reset-sequence.js
+```
+
+Para más detalles sobre las pruebas, consulta el [README de pruebas](tests/README.md).

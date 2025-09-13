@@ -11,6 +11,11 @@ export interface User {
   email: string;
 }
 
+export interface CreateUserData {
+  name: string;
+  email: string;
+}
+
 // Funciones CRUD usando la instancia api
 export const getUsers = async (): Promise<User[]> => {
   const res = await api.get("/users");
@@ -22,12 +27,12 @@ export const getUserById = async (id: number): Promise<User> => {
   return res.data;
 };
 
-export const createUser = async (user: User): Promise<User> => {
+export const createUser = async (user: CreateUserData): Promise<User> => {
   const res = await api.post("/users", user);
   return res.data;
 };
 
-export const updateUser = async (id: number, user: User): Promise<User> => {
+export const updateUser = async (id: number, user: CreateUserData): Promise<User> => {
   const res = await api.put(`/users/${id}`, user);
   return res.data;
 };
