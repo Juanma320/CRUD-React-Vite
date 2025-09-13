@@ -10,17 +10,16 @@ dotenv.config();
 
 // Conexión a BD
 const pool = new Pool({
-  user: process.env.PG_USER,
-  host: process.env.PG_HOST,
-  database: process.env.PG_DATABASE,
-  password: process.env.PG_PASSWORD,
-  port: Number(process.env.PG_PORT),
+  connectionString: process.env.POSTGRES_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 // Rutas CRUD
 
 // Ruta de bienvenida
-app.get("/", (_, res) => {
+app.get("/api", (_, res) => {
   res.send("Bienvenido al backend del CRUD de React + PostgreSQL");
 });
 
@@ -79,7 +78,4 @@ app.post("/api/users/reset-sequence", async (req, res) => {
   }
 });
 
-// Levantar servidor
-app.listen(4000, () => {
-  console.log("Servidor corriendo en http://localhost:4000");
-});
+export default app;
