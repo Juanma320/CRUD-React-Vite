@@ -68,6 +68,17 @@ app.delete("/api/users/:id", async (req, res) => {
   res.json({ message: "Usuario eliminado" });
 });
 
+// Reiniciar secuencia de IDs (útil para desarrollo)
+app.post("/api/users/reset-sequence", async (req, res) => {
+  try {
+    await pool.query("ALTER SEQUENCE users_id_seq RESTART WITH 1");
+    res.json({ message: "Secuencia reiniciada exitosamente" });
+  } catch (error) {
+    console.error("Error al reiniciar secuencia:", error);
+    res.status(500).json({ message: "Error al reiniciar secuencia" });
+  }
+});
+
 // Levantar servidor
 app.listen(4000, () => {
   console.log("Servidor corriendo en http://localhost:4000");
