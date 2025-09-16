@@ -27,14 +27,14 @@ Una aplicación CRUD moderna y elegante construida con las últimas tecnologías
 ### Backend
 - **Node.js + Express** - API REST
 - **PostgreSQL** - Base de datos
-- **TypeScript** - Type safety
+- **JavaScript** - Lógica del servidor
 - **CORS** - Cross-origin requests
 
 ### Herramientas de Desarrollo
 - **pnpm** - Gestor de paquetes con workspace
 - **ESLint** - Linting
 - **Nodemon** - Auto-reload del servidor
-- **ts-node** - Ejecutor de TypeScript
+- **Vercel CLI** - Desarrollo y despliegue serverless
 
 ## 📋 Requisitos
 
@@ -46,19 +46,35 @@ Una aplicación CRUD moderna y elegante construida con las últimas tecnologías
 
 ```
 CRUD-React/
-├── src/                # Frontend React (raíz)
-│   ├── components/ui/  # Componentes reutilizables
-│   ├── contexts/       # Context providers (Theme, Toast)
-│   ├── hooks/          # Custom hooks
-│   ├── pages/          # Páginas principales
-│   ├── services/       # API y servicios externos
-│   └── types/          # Definiciones de tipos
-├── backend/            # API Express + PostgreSQL
-│   ├── src/index.ts    # Servidor principal
-│   └── package.json    # Backend dependencies
-├── tests/              # Suite de pruebas de estrés
-├── package.json        # Frontend dependencies
-└── pnpm-workspace.yaml # Configuración de workspace
+├── src/                   # Frontend (Vite + React + TS)
+│   ├── components/ui/     # Componentes reutilizables
+│   ├── contexts/          # Context providers (Theme, Toast)
+│   ├── hooks/             # Custom hooks
+│   ├── pages/             # Páginas principales
+│   ├── services/          # Axios → apunta a /api/*
+│   └── types/             # Definiciones de tipos
+│
+├── backend/               # Backend Express (solo lógica, sin listen)
+│   ├── src/
+│   │   ├── app.js         # Define app Express (rutas, middlewares)
+│   │   ├── routes/        # Rutas (ej. users.routes.js)
+│   │   ├── controllers/   # Controladores
+│   │   └── db/            # Conexión a PostgreSQL
+│   ├── server.js          # Solo para local → levanta en puerto 4000
+│   └── package.json       # Dependencias backend
+│
+├── api/                   # Wrappers para Vercel (serverless)
+│   ├── package.json       # Configuración CommonJS
+│   └── users.js           # Importa app y expone handler
+│
+├── tests/                 # Suite de pruebas de estrés
+│
+├── .env                   # Variables de entorno
+├── .env.example           # Template de variables
+├── package.json           # Dependencias raíz (frontend)
+├── pnpm-workspace.yaml    # Define workspaces (frontend + backend + api)
+├── vite.config.ts         # Proxy en dev → /api → http://localhost:4000
+└── vercel.json            # Configuración de despliegue
 ```
 
 ## 🗄️ Configuración de Base de Datos
@@ -94,20 +110,48 @@ pnpm install
 
 ### 2. Configurar base de datos
 ```bash
-# Configurar variables de entorno
-cd backend
+# Configurar variables de entorno (archivo en la raíz)
 copy .env.example .env
-# Editar .env con tus credenciales de PostgreSQL
+# Editar .env con tus credenciales de PostgreSQL y Neon
 ```
 
 ### 3. Ejecutar el proyecto
-```bash
-# Terminal 1 - Frontend
-pnpm run dev
 
-# Terminal 2 - Backend
-cd backend
-pnpm run dev
+El proyecto utiliza **detección automática** de base de datos según el entorno:
+
+#### Opción A: Desarrollo con PostgreSQL local
+```bash
+# Terminal 1 - Frontend (con proxy a backend)
+pnpm run dev:front
+
+# Terminal 2 - Backend → usa variables PG_* del .env
+pnpm run dev:back
+```
+
+#### Opción B: Desarrollo con Neon
+```bash
+# Con script personalizado → fuerza VERCEL=1 y usa Neon
+pnpm run vercel:dev
+
+# Con Vercel CLI directo → usa variables locales (PostgreSQL)
+vercel dev
+```
+
+> **💡 Lógica de detección:**
+> - `pnpm run vercel:dev` → Establece `VERCEL=1` → Neon
+> - `vercel dev` → No establece `VERCEL=1` → PostgreSQL local
+> - Variables `PG_*` presentes → PostgreSQL local
+
+### 4. Despliegue en Vercel
+```bash
+# Instalar Vercel CLI
+npm i -g vercel
+
+# Desplegar
+vercel
+
+# Configurar variable de entorno en Vercel Dashboard:
+# POSTGRES_URL=postgresql://usuario:contraseña@host:puerto/nombre_db?sslmode=require
 ```
 
 ## 🧪 Testing

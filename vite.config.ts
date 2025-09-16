@@ -5,4 +5,10 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: {
+    // Solo usar proxy si no estamos en Vercel dev
+    proxy: process.env.VERCEL ? {} : {
+      '/api': 'http://localhost:4000'
+    }
+  }
 })
